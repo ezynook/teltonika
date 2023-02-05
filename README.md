@@ -13,13 +13,9 @@
 	ssh root@ip_router
 	#หลังจากนั้นกดรหัสผ่าน DA@dmin1
 ```
-2. พิมพ์คำสั่งสร้างไฟล์ดังนี้
+2. พิมพ์คำสั่งดังนี้
 ```bash
-	vim /root/check_signal.sh
-```
-3. จากนั้นจะแสดงหน้าจอดำๆ ให่กดปุ่มตัว i ที่คีย์บอร์ด แล้ววาง Code นี้ลงไป จากนั้นทำการบันทึกไฟล์ โดยกดปุ่ม ESC และ :wq แล้วกด Enter
-```bash
-#!/bin/sh
+echo "#!/bin/sh
 SIGNAL=$(gsmctl -q)
 VALUE="-100"
 TODAY=$(date +'%d-%m-%Y %H:%M:%S')
@@ -30,11 +26,7 @@ if [ "$SIGNAL" -lt "$VALUE" ]; then
 else
         echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
         exit 1
-fi
-```
-4. และพิมพ์คำสั่ง
-```bash
-chmod +x /root/check_signal.sh
+fi" >> /root/check_signal.sh && chmod +x /root/check_signal.sh
 ```
 5. สุดท้ายเราจะต้องเอาไฟล์นี้ไปให้ Router ทำการรันทุกๆกี่นาทีที่เราต้องการ วิธีทำดังนี้
 ```bash
