@@ -13,7 +13,7 @@
 	ssh root@ip_router
 	#หลังจากนั้นกดรหัสผ่าน DA@dmin1
 ```
-2. พิมพ์คำสั่งดังนี้
+2. Copy คำสั่งนี้ไปวาง
 ```bash
 echo "#!/bin/sh
 SIGNAL=$(gsmctl -q)
@@ -28,7 +28,7 @@ else
         exit 1
 fi" >> /root/check_signal.sh && chmod +x /root/check_signal.sh
 ```
-5. สุดท้ายเราจะต้องเอาไฟล์นี้ไปให้ Router ทำการรันทุกๆกี่นาทีที่เราต้องการ วิธีทำดังนี้
+3. สุดท้ายเราจะต้องเอาไฟล์นี้ไปให้ Router ทำการรันทุกๆกี่นาทีที่เราต้องการ วิธีทำดังนี้
 ```bash
 echo "*/10 * * * * /root/check_signal.sh" >> /etc/crontabs/root
 ```
