@@ -9,5 +9,21 @@
 * Update Package ให้ทันสมัย | ทุกๆ 9 โมงเช้า
 * ส่งไลน์ทุกๆ 9 โมงเช้าเพื่อบอกสถานะ Router ของทุกวัน
 ---
-## สถานะดูได้จากภาพนี้
-<img src="">
+## วิธีการใช้งานและติดตั้ง
+### เข้าไปยัง Router
+* Username: root
+* Password: DA@dmin1
+
+> เข้าไปที่ Router > Service > CLI
+### จากนั้นพิมพ์คำสั่งตามลำดับดังนี้
+```sh
+cd /bin/
+wget https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh
+chmod +x /bin/script.sh
+./script.sh
+```
+### รอจนกว่าจะเสร็จและทำการลบไฟล์ออก
+```sh
+rm -f /bin/script.sh
+---
+> ## Developer | Pasit Y.
