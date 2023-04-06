@@ -1,4 +1,18 @@
-### ตรวจสอบการทำงานของ VPN และ Network พร้อมส่ง Line Notify Teltonika
+## การตรวจสอบทั้งหมดมีดังนี้
+* ตรวจสอบการทำงานของสัญญาณของซิมว่ามัสัญญาณเท่าไหร่ หากไม่ Connect จะสั่ง Restart ทันที
+* ตรวจสอบการทำงานของ VPN IpSec
+* ตรวจสอบแรมขแงเราเตอร์ว่ามีขนาดเท่าไหร่หากน้อยเกินไปจะทำการ Reset
+* ตรวจสอบ Uptime ของเราเตอร์ว่าออกเน็ตได้หรือไม่โดยการอัพเดตต้องวันต่อวัน หากไม่มีการอัพเดตจะสีาง Restart Signal
+---
+* Check All Service Everyday at: 09:00 AM
+* Check VPN IPSec Every minute at: 1:00 Minutes
+* Check Signal dB Every 15 minutes at: 15 Minutes/Hours
+* Check And Clear Ram Every 23:59PM Everyday
+* Check VPN IPSec Every at Logon (If failure)
+* Check DNS resolve all dns nameserver to 8.8.8.8
+---
+
+## ตรวจสอบการทำงานของ VPN และ Network พร้อมส่ง Line Notify Teltonika
 ##### วิธีการติดตั้งและใช้งาน
 1. Login เข้า Router จากนั้นไปที่เมนู Service -> CLI หรือ SSH ผ่าน Powershell คำสั่งดังนี้
 ```bash
