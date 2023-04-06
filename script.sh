@@ -11,7 +11,8 @@ if [ -n "$checkchkservice" ]; then
 	rm -f /bin/chkservice.sh
 fi
 
-echo "0 * * * * /etc/init.d/rut_fota start" > /etc/crontabs/root
+echo "*/5 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
+echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
 
 mkdir -p /var/log/
 touch /var/log/da.log
@@ -46,51 +47,37 @@ else
     echo "$TODAY -> Service IPSec is Normal"
     echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
-SIGNAL=`gsmctl -q | cut -d "-" -f2`
-if [ "$SIGNAL" -le "70" ]; then
-    SN_STATE="ระดับสัญญาณ: -$SIGNAL dBm : สัญญาณดีมาก"
-else
-    SN_STATE="ระดับสัญญาณ: $SIGNAL dBm : สัญญาณแย่"
-fi
-if [ "$(free -h)" -le "10240" ]; then
-    echo 3 > /proc/sys/vm/drop_caches
-    echo "$TODAY -> Memory Cleaned" >> /var/log/da.log
-fi
 
-if [ "$(ping -c 1 10.0.255.1)" -eq 0 ]; then
-    echo "$TODAY -> Service IPSec is Normal"
-    echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
-else
-    /etc/init.d/ipsec restart
-    iptables -F
-    iptables -X
-    iptables -P INPUT ACCEPT
-    iptables -P FORWARD ACCEPT
-    iptables -P OUTPUT ACCEPT
-    iptables-save
-    echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
-fi
+SIGNAL1=$(gsmctl -q)
+VALUE1="-100"
 
-SIGNAL=$(gsmctl -q)
-VALUE="-100"
-
-if [ "$SIGNAL" -le "$VALUE" ]; then
+if [ "$SIGNAL1" -le "$VALUE1" ]; then
         echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
+        S_SG="Signal 4G is Bad = ${SIGNAL1}"
         reboot #init 6
 else
         echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
-        exit 1
+        S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
 
-DATENOW=$(date +'"'%Y-%m-%d'"')
-UPTIME_NOW=$(gsmctl --modemtime 2 | awk '"'{print $1}'"')
+ping -c3 10.0.255.1 1>/dev/null 2>/dev/null
+SUCCESS=$?
 
-if [ "$UPTIME_NOW" == "$DATENOW" ]; then
-    echo "$TODAY -> State Update Check by Date Successfully" >> /var/log/da.log
+if [ $SUCCESS -eq 0 ]; then
+  echo "$TODAY -> Service IPSec is Normal"
+  echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 else
-    echo "$TODAY -> State Update Check by Date Failure" >> /var/log/da.log
-    reboot
+  /etc/init.d/ipsec restart
+  iptables -F
+  iptables -X
+  iptables -P INPUT ACCEPT
+  iptables -P FORWARD ACCEPT
+  iptables -P OUTPUT ACCEPT
+  iptables-save
+  echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
+
+sync; echo 3 > /proc/sys/vm/drop_caches 
 
 #Script Check state by Pasit
 newline=$'"'\n'"'
@@ -114,7 +101,7 @@ sitecus="${site} / ${site2}"
 fwm="Firmware V. "
 fw=`cat /etc/version | cut -c10-0`
 dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $SN_STATE $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
+TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
 curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify' >> /bin/chkservice.sh
 echo "$TODAY -> Create ChkService Successfully"
 
@@ -124,12 +111,6 @@ TODAY=`date +%d-%m-%Y:%H-%M-%S`
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
-iptables -F
-iptables -X
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables-save
 if [ $ret -ne 0 ]; then
         /etc/init.d/ipsec restart
         iptables -F
@@ -144,9 +125,12 @@ else
         echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi' >>  /bin/ipsec_check.sh
 echo "$TODAY -> Create IPSec Successfully"
-
+wget http://engineer:engineer@58.137.140.160/uptime.sh -O /bin/uptime.sh
+chmod +x /bin/uptime.sh
 echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
 echo "* * * * * /bin/ipsec_check.sh" >> /etc/crontabs/root
+echo "*/15 * * * * /bin/uptime.sh" >> /etc/crontabs/root
+echo "59 23 * * * sync; echo 3 > /proc/sys/vm/drop_caches " >> /etc/crontabs/root
 echo "@reboot /bin/ipsec_check.sh" >> /etc/crontabs/root
 echo "$TODAY -> Create Cronjob Successfully"
 echo "Add Resolve DNS"
@@ -158,5 +142,3 @@ echo "Update Available Package"
 opkg update
 /bin/ipsec_check.sh
 /bin/chkservice.sh
-
-
