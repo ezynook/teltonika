@@ -2,7 +2,7 @@
 
 checkipsec=`ls /bin/ | grep ipsec_check`
 checkchkservice=`ls /bin/ | grep chkservice.sh`
-
+#Check file Existing
 if [ -n "$checkipsec" ]; then
 	rm -f /bin/ipsec_check.sh
 fi
@@ -18,10 +18,11 @@ mkdir -p /var/log/
 touch /var/log/da.log
 touch /bin/chkservice.sh && chmod 775 /bin/chkservice.sh
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
+#Write chkservice.sh
 echo '#!/bin/sh
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q" #Line Toey Tech.
-
+#เช็คว่ามีสัญญาณมาจากผู้ให้บริการหรือไม่
 if [ -z "$(gsmctl -j | grep connected)" ];
 then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
@@ -30,7 +31,7 @@ else
     echo "$TODAY -> Service Sim Carrier is Normal";
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
-
+#เช็ค VPN
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
@@ -47,7 +48,7 @@ else
     echo "$TODAY -> Service IPSec is Normal"
     echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
-
+#เช็คสัญญาณ
 SIGNAL1=$(gsmctl -q)
 VALUE1="-100"
 
@@ -59,7 +60,7 @@ else
         echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
         S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
-
+#เช็คสัญญาณ Tier 2
 ping -c3 10.0.255.1 1>/dev/null 2>/dev/null
 SUCCESS=$?
 
@@ -76,7 +77,7 @@ else
   iptables-save
   echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
-
+#ล้างแรม
 sync; echo 3 > /proc/sys/vm/drop_caches 
 
 #Script Check state by Pasit
