@@ -1,3 +1,13 @@
-## รวมคำสั่งที่ใช้งานกับ Teltonika
-1. เช็คสัญญาณ (หากต่ำเกินกว่าจะส่งข้อมูลได้ให้ Router Restart อัตโนมัติ) [คลิกที่นี่](https://github.com/ezynook/teltonika/blob/main/%E0%B9%80%E0%B8%8A%E0%B9%87%E0%B8%84%E0%B8%AA%E0%B8%B1%E0%B8%8D%E0%B8%8D%E0%B8%B2%E0%B8%93%20Teltonika.md)
-2. เช็ค VPN และ Network หากตรวจสอบว่าไม่สามารถออกเน็ตได้จะทำการ Restart Network Service ให้แบบอัตโนมัติ [คลิกที่นี่](https://github.com/ezynook/teltonika/blob/main/%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%AA%E0%B8%AD%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%97%E0%B8%B3%E0%B8%87%E0%B8%B2%E0%B8%99%20VPN.md)
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Teltonika_logo.sng.png/1200px-Teltonika_logo.sng.png" align="center">
+
+# หลักการทำงานของ Script
+* เช็คสัญญาณของซิมว่าต้ำกว่ามาตราฐานหรือไม่ หากต่ำกว่าก็จะ Restart Service โดยอัตโนมัติ | ทุกๆ 9 โมงเช้าของทุกวัน
+* ตรวจสอบการทำงานของ VPN IPSec หากไม่สามารถเชื่อมต่อได้จะ Restart IPSec อัตโนมัติ | ทุกๆ 1 นาที
+* เช็คการทำงานของซิม เวลาที่ Online ล่าสุดต้องไม่ต่ำกว่า 1 วัน (วันที่ Uptime ต้องตรงกับ Date Now) | ทุกๆ 15 นาที
+* เช็ค Memory ของ Router ว่าต่ำกว่ามาตราฐานหรือไม่ ที่ได้ทำการตั้งไว้คือ <= 10MB (โดยทั้งหมดมี 64MB) | ทุกๆ 23:59 ของทุกวัน
+* เช็ค DNS ให้ออนไลน์ไปที่ 8.8.8.8 (Google DNS) เพื่อให้ตรวจสอบการออกอินเตอร์เน็ตได้
+* Update Package ให้ทันสมัย | ทุกๆ 9 โมงเช้า
+* ส่งไลน์ทุกๆ 9 โมงเช้าเพื่อบอกสถานะ Router ของทุกวัน
+---
+## สถานะดูได้จากภาพนี้
+<img src="">
