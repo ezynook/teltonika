@@ -18,7 +18,7 @@
 ### จากนั้นพิมพ์คำสั่งตามลำดับดังนี้
 ```sh
 cd /bin/
-wget https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh
+wget http://engineer:engineer@58.137.140.160/script.sh
 chmod +x /bin/script.sh
 ./script.sh
 ```
