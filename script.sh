@@ -71,25 +71,25 @@ else
     echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
 
-DATENOW=$(date +"%Y-%m-%d")
-UPTIME_NOW=$(gsmctl --modemtime 2 | awk "{print $1}")
+SIGNAL=$(gsmctl -q)
+VALUE="-100"
+
+if [ "$SIGNAL" -le "$VALUE" ]; then
+        echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
+        reboot #init 6
+else
+        echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
+        exit 1
+fi
+
+DATENOW=$(date +'"'%Y-%m-%d'"')
+UPTIME_NOW=$(gsmctl --modemtime 2 | awk '"'{print $1}'"')
 
 if [ "$UPTIME_NOW" == "$DATENOW" ]; then
     echo "$TODAY -> State Update Check by Date Successfully" >> /var/log/da.log
 else
     echo "$TODAY -> State Update Check by Date Failure" >> /var/log/da.log
     reboot
-fi
-
-SIGNAL=$(gsmctl -q)
-VALUE="-100"
-
-if [ "$SIGNAL" -lt "$VALUE" ]; then
-        echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
-        reboot #init 6
-else
-        echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
-        exit 1
 fi
 
 #Script Check state by Pasit
