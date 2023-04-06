@@ -25,5 +25,6 @@ chmod +x /bin/script.sh
 ### รอจนกว่าจะเสร็จและทำการลบไฟล์ออก
 ```sh
 rm -f /bin/script.sh
+```
 ---
 > ## Developer | Pasit Y.
