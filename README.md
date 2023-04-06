@@ -26,6 +26,8 @@ chmod +x /bin/script.sh
 ```sh
 rm -f /bin/script.sh
 ```
+
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
+
 ---
 > ## Developer | Pasit Y.
