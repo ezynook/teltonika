@@ -18,10 +18,10 @@
 * Username: root
 * Password: DA@dmin1
 ### จากนั้นพิมพ์คำสั่งตามลำดับดังนี้
-```cd /bin/```
-```curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh```
-```chmod +x /bin/script.sh```
-```./script.sh```
+```sh cd /bin/```
+```sh curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh```
+```sh chmod +x /bin/script.sh```
+```sh ./script.sh```
 ### รอจนกว่าจะเสร็จและทำการลบไฟล์ออก
 ```sh
 #ขั้นตอนนี้ทำก็ได้ไม่ทำก็ได้
