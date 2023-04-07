@@ -149,7 +149,7 @@ echo "nameserver 8.8.8.8" >> /tmp/resolv.conf.auto
 echo "Crontab Task Restarting and Enable to Spool"
 /etc/init.d/cron enable
 /etc/init.d/cron restart
-/etc/init.d/ipsec restart
+#/etc/init.d/ipsec restart
 #/etc/init.d/dnsmasq reload
 #/etc/init.d/network reload
 echo "Update Available Package"
