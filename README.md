@@ -10,20 +10,23 @@
 * ส่งไลน์ทุกๆ 9 โมงเช้าเพื่อบอกสถานะ Router ของทุกวัน
 ---
 ## วิธีการใช้งานและติดตั้ง
-### เข้าไปยัง Router
-* Username: root
+### เข้าไปยัง Router ผ่าน Browser
+* Username: admin
 * Password: DA@dmin1
 
-> เข้าไปที่ Router > Service > CLI
+> เข้าไปที่เมนู Services > CLI จากนั้น Login ด้วย
+* Username: root
+* Password: DA@dmin1
 ### จากนั้นพิมพ์คำสั่งตามลำดับดังนี้
 ```sh
 cd /bin/
-wget http://engineer:engineer@58.137.140.160/script.sh
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh
 chmod +x /bin/script.sh
 ./script.sh
 ```
 ### รอจนกว่าจะเสร็จและทำการลบไฟล์ออก
 ```sh
+#ขั้นตอนนี้ทำก็ได้ไม่ทำก็ได้
 rm -f /bin/script.sh
 ```
 
