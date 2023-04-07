@@ -15,8 +15,8 @@ ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
 if [ $ret -ne 0 ]; then
     /etc/init.d/ipsec restart
-    /etc/init.d/dnsmasq reload
-    /etc/init.d/network reload
+    #/etc/init.d/dnsmasq reload
+    #/etc/init.d/network reload
     iptables -F
     iptables -X
     iptables -P INPUT ACCEPT
@@ -49,8 +49,8 @@ if [ $SUCCESS -eq 0 ]; then
   echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 else
   /etc/init.d/ipsec restart
-  /etc/init.d/dnsmasq reload
-  /etc/init.d/network reload
+  #/etc/init.d/dnsmasq reload
+  #/etc/init.d/network reload
   iptables -F
   iptables -X
   iptables -P INPUT ACCEPT
