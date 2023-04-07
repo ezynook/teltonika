@@ -17,23 +17,9 @@
 > เข้าไปที่เมนู Services > CLI จากนั้น Login ด้วย
 * Username: root
 * Password: DA@dmin1
-### จากนั้นพิมพ์คำสั่งตามลำดับดังนี้
+### จากนั้น Copy & Paste คำสั่งดังนี้
 ```sh
-cd /bin/
-```
-```sh
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh
-```
-```sh
-chmod +x /bin/script.sh
-```
-```sh
-./script.sh
-```
-### รอจนกว่าจะเสร็จและทำการลบไฟล์ออก
-```sh
-#ขั้นตอนนี้ทำก็ได้ไม่ทำก็ได้
-rm -f /bin/script.sh
+cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
 ```
 
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
