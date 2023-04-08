@@ -1,21 +1,16 @@
 #!/bin/sh
 
-checkipsec=`ls /bin/ | grep ipsec_check`
-checkchkservice=`ls /bin/ | grep chkservice`
-checkuptime=`ls /bin/ | grep uptime`
-checkretry=`ls /bin/ | grep script_retry`
-
 #เช็คว่ามีไฟล์แล้วหรือไม่หากมีให้ลบก่อน
-if [ -n "$checkipsec" ]; then
+if [ -n "$(ls /bin/ | grep ipsec_check)" ]; then
 	rm -f /bin/ipsec_check.sh
 fi
-if [ -n "$checkchkservice" ]; then
+if [ -n "$(ls /bin/ | grep chkservice)" ]; then
 	rm -f /bin/chkservice.sh
 fi
-if [ -n "$checkuptime" ]; then
+if [ -n "$(ls /bin/ | grep uptime)" ]; then
 	rm -f /bin/uptime.sh
 fi
-if [ -n "$checkretry" ]; then
+if [ -n "$(ls /bin/ | grep script_retry)" ]; then
   rm -f /bin/script_retry.sh
 fi
 
