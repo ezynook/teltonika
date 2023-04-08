@@ -57,7 +57,7 @@ cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/maste
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/uptime.sh; chmod +x /bin/uptime.sh
 
 echo "---------------Writing Crontab Scheduler----------------------"
-echo "*/5 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
+echo "*/2 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
 echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
 echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
 echo "* * * * * /bin/script_retry.sh" >> /etc/crontabs/root
