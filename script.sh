@@ -10,6 +10,7 @@ mICCID="Sim No.: "
 ICCID=`gsmctl -J`
 mCarr="Carrier: "
 Carr=`gsmctl -o`
+high_signal="ระดับสัญญาณ: $(gsmctl -t)"
 IPm="IP Private: "
 IP2m="IP Public: "
 IP2=`gsmctl --ip wwan0`
@@ -25,7 +26,7 @@ sitecus="${site} / ${site2}"
 fwm="Firmware V. "
 fw=`cat /etc/version | cut -c10-0`
 dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
+TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
 curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify	
 ' >> /bin/chkservice.sh
 echo "-------------Append Sendline to Existing Script----------------"
@@ -98,7 +99,7 @@ sitecus="${site} / ${site2}"
 fwm="Firmware V. "
 fw=`cat /etc/version | cut -c10-0`
 dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
+TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
 curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify	
 ' >> /bin/chkservice.sh
 fi
