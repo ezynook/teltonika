@@ -2,7 +2,7 @@
 
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
-ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
+ping 10.0.255.1 -I $ip -c3 -q > /dev/null 2>&1
 ret=$?
 if [ $ret -ne 0 ]; then
         /etc/init.d/ipsec restart

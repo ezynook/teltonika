@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "-----------------Checking Signal Uptime By Day-------------------"
+echo "Checking Signal Uptime Logdate equal date now..."
 DATENOW=$(date +'%Y-%m-%d')                          
 UPTIME_NOW=$(gsmctl --modemtime 2 | awk '{print $1}')
 

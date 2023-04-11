@@ -17,7 +17,9 @@
 > เข้าไปที่เมนู Services > CLI จากนั้น Login ด้วย
 * Username: root
 * Password: DA@dmin1
-### จากนั้น Copy & Paste คำสั่งดังนี้
+> หรือเข้าผ่าน CMD
+```ssh root@ipaddress```
+### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
 ```sh
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
 ```
@@ -25,4 +27,4 @@ cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/scrip
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
 
 ---
-> ## Developer | Pasit Y.
+> ### Developer | Pasit Y. | Latest release 2023.04.11
