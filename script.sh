@@ -1,12 +1,5 @@
 #!/bin/sh
 
-#Text-Color------------------
-BBlack='\033[1;30m'       # Black
-BRed='\033[1;31m'         # Red
-BGreen='\033[1;32m'       # Green
-BWhite='\033[1;37m'       # White
-#----------------------------
-
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 
 if [ "$1" == '-append' ]; then
@@ -39,7 +32,7 @@ echo "Append Sendline to Existing Script..."
 exit 1
 fi
 
-echo "${BGreen} Check file all ready Exists...!"
+echo "Check file all ready Exists...!"
 if [ -n "$(ls /bin/ | grep ipsec_check)" ]; then
 	rm -f /bin/ipsec_check.sh
 fi
@@ -53,17 +46,17 @@ if [ -n "$(ls /bin/ | grep uptime.sh)" ]; then
 	rm -f /bin/uptime.sh
 fi
 
-echo "${BGreen} Create Log Directory..."
+echo "Create Log Directory..."
 mkdir -p /var/log/
 touch /var/log/da.log
 
-echo "${BGreen} Get Script from github server..."
+echo "Get Script from github server..."
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh; chmod +x /bin/ipsec_check.sh > /dev/null 2>&1
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh; chmod +x /bin/chkservice.sh > /dev/null 2>&1
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/script_retry.sh; chmod +x /bin/script_retry.sh > /dev/null 2>&1
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/uptime.sh; chmod +x /bin/uptime.sh > /dev/null 2>&1
 
-echo "${BGreen} Writing Crontab Scheduler..."
+echo "Writing Crontab Scheduler..."
 echo "*/2 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
 echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
 echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
@@ -77,13 +70,13 @@ echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable > /dev/null 2>&1
 /etc/init.d/cron restart > /dev/null 2>&1
 
-echo "${BGreen} Check and Add Resolve DNS..."
+echo "Check and Add Resolve DNS..."
 if [ -z "$(cat /tmp/resolv.conf.auto | grep 8.8.8.8)" ]; then
 	echo "nameserver 8.8.8.8" >> /tmp/resolv.conf.auto
 	echo "nameserver 1.1.1.1" >> /tmp/resolv.conf.auto
 fi
 
-echo "${BGreen} Update available package has Up-to-Date now..."
+echo "Update available package has Up-to-Date now..."
 opkg update > /dev/null 2>&1
 
 if [ -z "$1" ]; then
@@ -114,9 +107,9 @@ TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $I
 curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify > /dev/null 2>&1' >> /bin/chkservice.sh
 fi
 
-echo "${BGreen} Please wait Starting All Service..."
-echo "${BGreen} Completed!"
-echo "${BWhite}"
+echo "Please wait Starting All Service..."
+echo "Completed!"
+
 /bin/ipsec_check.sh 
 /bin/chkservice.sh 
 /bin/script_retry.sh 

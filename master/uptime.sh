@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "${BGreen} Checking Signal Uptime Logdate equal date now..."
+echo "Checking Signal Uptime Logdate equal date now..."
 DATENOW=$(date +'%Y-%m-%d')                          
 UPTIME_NOW=$(gsmctl --modemtime 2 | awk '{print $1}')
 
@@ -10,4 +10,4 @@ else
     echo "$TODAY -> State Update Check by Date Failure" >> /var/log/da.log
     reboot
 fi
-echo "${BWhite}"
+

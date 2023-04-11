@@ -1,16 +1,9 @@
 #!/bin/sh
 
-#Text-Color------------------
-BBlack='\033[1;30m'       # Black
-BRed='\033[1;31m'         # Red
-BGreen='\033[1;32m'       # Green
-BWhite='\033[1;37m'       # White
-#----------------------------
-
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q" #Line Toey Tech.
 
-echo "${BGreen} Checking file all ready exists..."
+echo "Checking file all ready exists..."
 if [ -z "$(gsmctl -j | grep connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
     reboot
@@ -19,7 +12,7 @@ else
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
 
-echo "${BGreen} Check VPN IPSec from DA firewall HQ..."
+echo "Check VPN IPSec from DA firewall HQ..."
 ping -c3 10.0.255.1 > /dev/null 2>&1
 ret=$?
 if [ $ret -ne 0 ]; then
@@ -36,7 +29,7 @@ else
     echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
 
-echo "${BGreen} Checking Signal Status (Tier 1 -3C)..."
+echo "Checking Signal Status (Tier 1 -3C)..."
 SIGNAL1=$(gsmctl -q)
 VALUE1="-100"
 
@@ -49,7 +42,7 @@ else
         S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
 
-echo "${BGreen} Checking Signal Status (Tier 2 -1C)...."
+echo "Checking Signal Status (Tier 2 -1C)...."
 ping -c1 10.0.255.1 > /dev/null 2>&1
 SUCCESS=$?
 
@@ -69,5 +62,4 @@ fi
 
 #ล้าง Memory
 sync; echo 3 > /proc/sys/vm/drop_caches
-echo "${BWhite}"
 
