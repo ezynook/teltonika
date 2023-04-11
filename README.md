@@ -23,6 +23,7 @@
 ```sh
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
 ```
+### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
 ---
 Other Parameter
 * Runing Script without Send line Every 9.00am
@@ -31,7 +32,4 @@ Other Parameter
 ```./script.sh -append```
 ---
 
-### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
-
----
 <a href="#" align="right"><i>Developer: Pasit Y. (Release 20230411)</i></a>
