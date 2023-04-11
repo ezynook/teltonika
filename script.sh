@@ -73,6 +73,7 @@ echo "Crontab Task Restarting and Enable to Spool..."
 echo "Check and Add Resolve DNS..."
 if [ -z "$(cat /tmp/resolv.conf.auto | grep 8.8.8.8)" ]; then
 	echo "nameserver 8.8.8.8" >> /tmp/resolv.conf.auto
+	echo "nameserver 1.1.1.1" >> /tmp/resolv.conf.auto
 fi
 
 echo "Update available package has Up-to-Date now..."
