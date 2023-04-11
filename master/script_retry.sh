@@ -47,6 +47,7 @@ else
 fi
 #
 echo "-------------------Check VPN IPSec (Tier 2 -C1)-------------------"
+ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 1 -q >/dev/null
 SUCCESS=$?
 
