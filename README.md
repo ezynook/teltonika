@@ -21,11 +21,7 @@
 ```ssh root@ipaddress```
 ### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
 ```sh
-cd /bin/; \
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; \
-chmod +x /bin/script.sh; \
-./script.sh; \
-rm -f /bin/script.sh
+cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
 ```
 
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
