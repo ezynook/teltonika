@@ -23,14 +23,14 @@
 ```sh
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
 ```
-### หากไม่ต้องการให้ส่งไลน์ใน Script ให้ใช้คำสั่ง
-```bash
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh 1; rm -f /bin/script.sh
-```
-### หากต้องการอัพเดตให้สามารถส่งไลน์ได้ (โดยไม่ต้องลบและ Run คำสั่งทั้งหมดให้) ให้ใช้คำสั่งดังนี้
-```bash
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh -append; rm -f /bin/script.sh
-```
+---
+Other Parameter
+* Runing Script without Send line Every 9.00am
+```./script.sh 1``` <br>
+* Append Send line to existing script
+```./script.sh -append```
+---
+
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
 
 ---
