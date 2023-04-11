@@ -1,5 +1,12 @@
 #!/bin/sh
 
+#Text-Color------------------
+BBlack='\033[1;30m'       # Black
+BRed='\033[1;31m'         # Red
+BGreen='\033[1;32m'       # Green
+BWhite='\033[1;37m'       # White
+#----------------------------
+
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 
 if [ "$1" == '-append' ]; then
@@ -27,13 +34,12 @@ fwm="Firmware V. "
 fw=`cat /etc/version | cut -c10-0`
 dates="Last check: $TODAY"
 TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
-curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify	
-' >> /bin/chkservice.sh
+curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify > /dev/null 2>&1' >> /bin/chkservice.sh
 echo "Append Sendline to Existing Script..."
 exit 1
 fi
 
-echo "Check file all ready Exists...!"
+echo "${BGreen} Check file all ready Exists...!"
 if [ -n "$(ls /bin/ | grep ipsec_check)" ]; then
 	rm -f /bin/ipsec_check.sh
 fi
@@ -47,17 +53,17 @@ if [ -n "$(ls /bin/ | grep uptime.sh)" ]; then
 	rm -f /bin/uptime.sh
 fi
 
-echo "Create Log Directory..."
+echo "${BGreen} Create Log Directory..."
 mkdir -p /var/log/
 touch /var/log/da.log
 
-echo "Get Script from github server..."
+echo "${BGreen} Get Script from github server..."
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh; chmod +x /bin/ipsec_check.sh > /dev/null 2>&1
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh; chmod +x /bin/chkservice.sh > /dev/null 2>&1
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/script_retry.sh; chmod +x /bin/script_retry.sh > /dev/null 2>&1
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/uptime.sh; chmod +x /bin/uptime.sh > /dev/null 2>&1
 
-echo "Writing Crontab Scheduler..."
+echo "${BGreen} Writing Crontab Scheduler..."
 echo "*/2 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
 echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
 echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
@@ -71,13 +77,13 @@ echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable > /dev/null 2>&1
 /etc/init.d/cron restart > /dev/null 2>&1
 
-echo "Check and Add Resolve DNS..."
+echo "${BGreen} Check and Add Resolve DNS..."
 if [ -z "$(cat /tmp/resolv.conf.auto | grep 8.8.8.8)" ]; then
 	echo "nameserver 8.8.8.8" >> /tmp/resolv.conf.auto
 	echo "nameserver 1.1.1.1" >> /tmp/resolv.conf.auto
 fi
 
-echo "Update available package has Up-to-Date now..."
+echo "${BGreen} Update available package has Up-to-Date now..."
 opkg update > /dev/null 2>&1
 
 if [ -z "$1" ]; then
@@ -105,11 +111,12 @@ fwm="Firmware V. "
 fw=`cat /etc/version | cut -c10-0`
 dates="Last check: $TODAY"
 TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
-curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify	
-' >> /bin/chkservice.sh
+curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify > /dev/null 2>&1' >> /bin/chkservice.sh
 fi
 
-echo "Please wait Starting All Service..."
+echo "${BGreen} Please wait Starting All Service..."
+echo "${BGreen} Completed!"
+echo "${BWhite}"
 /bin/ipsec_check.sh 
 /bin/chkservice.sh 
 /bin/script_retry.sh 

@@ -2,7 +2,7 @@
 
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 
-echo "Check Sim signal status..."
+echo "${BGreen} Check Sim signal status..."
 if [ -z "$(gsmctl -j | grep connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
     reboot
@@ -11,7 +11,7 @@ else
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
 
-echo "Check VPN Status (Tier 1 -C3)..."
+echo "${BGreen} Check VPN Status (Tier 1 -C3)..."
 ping -c3 10.0.255.1 > /dev/null 2>&1
 ret=$?
 if [ $ret -ne 0 ]; then
@@ -28,7 +28,7 @@ else
     echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
 
-echo "Check Sim Signal Level Value Status..."
+echo "${BGreen} Check Sim Signal Level Value Status..."
 SIGNAL1=$(gsmctl -q)
 VALUE1="-90"
 
@@ -41,7 +41,7 @@ else
         S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
 
-echo "Check VPN IPSec (Tier 2 -C1)..."
+echo "${BGreen} Check VPN IPSec (Tier 2 -C1)..."
 ping -c1 10.0.255.1 > /dev/null 2>&1
 SUCCESS=$?
 
@@ -59,7 +59,7 @@ else
   echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
 
-echo "Check to connecting to public Google DNS..."
+echo "${BGreen} Check to connecting to public Google DNS..."
 ping -c5 8.8.8.8 > /dev/null 2>&1
 google_dns=$?
 
@@ -78,4 +78,4 @@ else
         echo "$TODAY -> Service DNS is Normal"
         echo "Last check at: $TODAY -> Service DNS is Normal" >> /var/log/da.log
 fi
-
+echo "${BWhite}"
