@@ -18,7 +18,11 @@
 * Username: root
 * Password: DA@dmin1
 > หรือเข้าผ่าน CMD
-```ssh root@ipaddress```
+```bash
+ssh root@ipaddress
+#example
+ssh root@10.1.1.1
+```
 ### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
 ```sh
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
