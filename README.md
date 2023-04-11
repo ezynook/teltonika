@@ -34,4 +34,4 @@ Other Parameter
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
 
 ---
-> ### Developer | Pasit Y. | Latest release 2023.04.11
+<a href="#" align="right"><i>Developer: Pasit Y. (Release 20230411)</i></a>
