@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#-----------------------------
+#Uptime Sim Status Date Check
+#-----------------------------
+TODAY=`date +%d-%m-%Y:%H-%M-%S`
 
 echo "-----------------Checking Signal Uptime By Day-------------------"
 DATENOW=$(date +'%Y-%m-%d')

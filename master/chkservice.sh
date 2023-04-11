@@ -1,7 +1,12 @@
 #!/bin/sh
 
+#-----------------------------------------
+#Check All Service Run Every at: 09:00 AM
+#-----------------------------------------
+
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
-TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q" #Line Toey Tech.
+
+TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q" #Line Token (Toey Account)
 echo "------------Checking file all ready exists---------------------"
 if [ -z "$(gsmctl -j | grep connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
@@ -10,6 +15,7 @@ else
     echo "$TODAY -> Service Sim Carrier is Normal";
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
+#
 echo "------------------Check VPN IPSec to HQ----------------------"
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
@@ -27,6 +33,7 @@ else
     echo "$TODAY -> Service IPSec is Normal"
     echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
+#
 echo "------------------Checking Signal Status (Tier 1 -3C)--------------------"
 SIGNAL1=$(gsmctl -q)
 VALUE1="-100"
@@ -39,6 +46,7 @@ else
         echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
         S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
+#
 echo "------------------Checking Signal Status (Tier 2 -1C)--------------------"
 ping -c3 10.0.255.1 1>/dev/null 2>/dev/null
 SUCCESS=$?
@@ -55,4 +63,5 @@ else
   iptables-save
   echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
+#
 sync; echo 3 > /proc/sys/vm/drop_caches

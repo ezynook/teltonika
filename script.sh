@@ -1,5 +1,7 @@
 #!/bin/sh
-
+#------------------------------
+#Script Launcher Main Code
+#------------------------------
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 
 if [ "$1" == '-append' ]; then
@@ -110,4 +112,5 @@ echo "Please wait Starting All Service..."
 /bin/chkservice.sh 
 /bin/script_retry.sh 
 /bin/uptime.sh 
-#----------Developed by Pasit Y. 2023-04-07--------------
+
+exit 0

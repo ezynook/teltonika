@@ -1,6 +1,11 @@
 #!/bin/sh
 
+#--------------------------
+#IPSec Check Every Minute
+#--------------------------
+
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
+
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
