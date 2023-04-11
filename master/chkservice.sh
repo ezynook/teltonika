@@ -3,7 +3,7 @@
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q" #Line Toey Tech.
 
-echo "Checking file all ready exists..."
+echo "Checking Sim all ready Connected..."
 if [ -z "$(gsmctl -j | grep connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
     reboot
@@ -13,23 +13,24 @@ else
 fi
 
 echo "Check VPN IPSec from DA firewall HQ..."
-ping -c3 10.0.255.1 > /dev/null 2>&1
+ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
+ping 10.0.255.1 -I $ip -c3 -q > /dev/null 2>&1
 ret=$?
 if [ $ret -ne 0 ]; then
-    /etc/init.d/ipsec restart
-    iptables -F
-    iptables -X
-    iptables -P INPUT ACCEPT
-    iptables -P FORWARD ACCEPT
-    iptables -P OUTPUT ACCEPT
-    iptables-save
-    echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
+        /etc/init.d/ipsec restart
+        iptables -F
+        iptables -X
+        iptables -P INPUT ACCEPT
+        iptables -P FORWARD ACCEPT
+        iptables -P OUTPUT ACCEPT
+        iptables-save
+        echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 else
-    echo "$TODAY -> Service IPSec is Normal"
-    echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
+        echo "$TODAY -> Service IPSec is Normal"
+        echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
 
-echo "Checking Signal Status (Tier 1 -3C)..."
+echo "Checking Signal Value..."
 SIGNAL1=$(gsmctl -q)
 VALUE1="-100"
 
@@ -43,21 +44,21 @@ else
 fi
 
 echo "Checking Signal Status (Tier 2 -1C)...."
-ping -c1 10.0.255.1 > /dev/null 2>&1
-SUCCESS=$?
-
-if [ $SUCCESS -eq 0 ]; then
-  echo "$TODAY -> Service IPSec is Normal"
-  echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
+ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
+ping 10.0.255.1 -I $ip -c1 -q > /dev/null 2>&1
+ret=$?
+if [ $ret -ne 0 ]; then
+        /etc/init.d/ipsec restart
+        iptables -F
+        iptables -X
+        iptables -P INPUT ACCEPT
+        iptables -P FORWARD ACCEPT
+        iptables -P OUTPUT ACCEPT
+        iptables-save
+        echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 else
-  /etc/init.d/ipsec restart
-  iptables -F
-  iptables -X
-  iptables -P INPUT ACCEPT
-  iptables -P FORWARD ACCEPT
-  iptables -P OUTPUT ACCEPT
-  iptables-save
-  echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
+        echo "$TODAY -> Service IPSec is Normal"
+        echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
 
 #ล้าง Memory
