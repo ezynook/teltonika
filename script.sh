@@ -67,11 +67,14 @@ echo "*/10 * * * * /bin/uptime.sh" >> /etc/crontabs/root
 echo "59 23 * * * sync; echo 3 > /proc/sys/vm/drop_caches " >> /etc/crontabs/root
 echo "@reboot /bin/ipsec_check.sh" >> /etc/crontabs/root
 echo "$TODAY -> Create Cronjob Successfully..."
-echo "Add Resolve DNS..."
-echo "nameserver 8.8.8.8" >> /tmp/resolv.conf.auto
 echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable > /dev/null 2>&1
 /etc/init.d/cron restart > /dev/null 2>&1
+
+echo "Check and Add Resolve DNS..."
+if [ -z "$(cat /tmp/resolv.conf.auto | grep 8.8.8.8)" ]; then
+	echo "nameserver 8.8.8.8" >> /tmp/resolv.conf.auto
+fi
 
 echo "Update available package has Up-to-Date now..."
 opkg update > /dev/null 2>&1

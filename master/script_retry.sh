@@ -58,3 +58,24 @@ else
   iptables-save
   echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
+
+echo "Check to connecting to public Google DNS..."
+ping -c5 8.8.8.8 > /dev/null 2>&1
+google_dns=$?
+
+if [ $google_dns -ne 0 ]; then
+        /etc/init.d/ipsec restart
+        /etc/init.d/dnsmasq restart
+        /etc/init.d/network restart
+        iptables -F
+        iptables -X
+        iptables -P INPUT ACCEPT
+        iptables -P FORWARD ACCEPT
+        iptables -P OUTPUT ACCEPT
+        iptables-save
+        echo "$TODAY -> Reboot router because connecting to google dns disconnected" >> /var/log/da.log
+else
+        echo "$TODAY -> Service DNS is Normal"
+        echo "Last check at: $TODAY -> Service DNS is Normal" >> /var/log/da.log
+fi
+
