@@ -47,7 +47,7 @@ else
 fi
 #
 echo "-------------------Check VPN IPSec (Tier 2 -C1)-------------------"
-ping -c3 10.0.255.1 1>/dev/null 2>/dev/null
+ping 10.0.255.1 -I $ip -c 1 -q >/dev/null
 SUCCESS=$?
 
 if [ $SUCCESS -eq 0 ]; then
