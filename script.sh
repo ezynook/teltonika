@@ -81,8 +81,9 @@ echo "Check and Add Resolve DNS..."
 echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
 #
 echo "Add Logon Script profile..."
-echo "/bin/script_retry.sh" >> /etc/profile
-echo "/bin/ipsec_check.sh" >> /etc/profile
+echo "
+/bin/script_retry.sh
+/bin/ipsec_check.sh" >> /etc/profile
 #
 echo "Update available package has Up-to-Date now..."
 opkg update >/dev/null 2>&1
