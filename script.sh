@@ -2,6 +2,15 @@
 #------------------------------
 #Script Launcher Main Code
 #------------------------------
+echo "
+----------------------------
+Teltonika Monitoring Script
+Author: Engineer NW & TC
+----------------------------
+-> Please wait ......
+"
+sleep 5
+#
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 #
 if [ "$1" == '-append' ]; then
