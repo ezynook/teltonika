@@ -3,7 +3,7 @@
 #Script Launcher Main Code
 #------------------------------
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
-
+#
 if [ "$1" == '-append' ]; then
 	echo '
 newline=$'"'\n'"'
@@ -33,7 +33,7 @@ curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notif
 echo "Append Sendline to Existing Script..."
 exit 1
 fi
-
+#
 echo "Check file all ready Exists...!"
 if [ -n "$(ls /bin/ | grep ipsec_check)" ]; then
 	rm -f /bin/ipsec_check.sh
@@ -47,17 +47,22 @@ fi
 if [ -n "$(ls /bin/ | grep uptime.sh)" ]; then
 	rm -f /bin/uptime.sh
 fi
-
+#
 echo "Create Log Directory..."
 mkdir -p /var/log/
 touch /var/log/da.log
-
+#
 echo "Get Script from github server..."
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh; chmod +x /bin/ipsec_check.sh
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh; chmod +x /bin/chkservice.sh
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/script_retry.sh; chmod +x /bin/script_retry.sh
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/uptime.sh; chmod +x /bin/uptime.sh
-
+cd /bin/
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/script_retry.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/uptime.sh >/dev/null 2>&1
+chmod +x /bin/ipsec_check.sh
+chmod +x /bin/chkservice.sh
+chmod +x /bin/script_retry.sh
+chmod +x /bin/uptime.sh
+#
 echo "Writing Crontab Scheduler..."
 echo "*/2 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
 echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
@@ -71,13 +76,17 @@ echo "$TODAY -> Create Cronjob Successfully..."
 echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable
 /etc/init.d/cron restart
-
+#
 echo "Check and Add Resolve DNS..."
 echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
-
+#
+echo "Add Logon Script profile..."
+echo "/bin/script_retry.sh" >> /etc/profile
+echo "/bin/ipsec_check.sh" >> /etc/profile
+#
 echo "Update available package has Up-to-Date now..."
-opkg update
-
+opkg update >/dev/null 2>&1
+#
 if [ -z "$1" ]; then
 	echo '
 newline=$'"'\n'"'
@@ -105,12 +114,13 @@ dates="Last check: $TODAY"
 TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
 curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify' >> /bin/chkservice.sh
 fi
-
+#
 echo "Please wait Starting All Service..."
-
+#
 /bin/ipsec_check.sh 
 /bin/chkservice.sh 
 /bin/script_retry.sh 
 /bin/uptime.sh 
-
+source /etc/profile
+#
 exit 0

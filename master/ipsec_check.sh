@@ -39,3 +39,4 @@ else
     iptables-save
     echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
 fi
+exit 0

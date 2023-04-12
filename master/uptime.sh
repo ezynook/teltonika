@@ -15,3 +15,4 @@ else
     echo "$TODAY -> State Update Check by Date Failure" >> /var/log/da.log
     reboot
 fi
+exit 0
