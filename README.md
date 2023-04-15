@@ -34,6 +34,3 @@ Other Parameter
 ```./script.sh 1``` <br>
 * Append Send line to existing script
 ```./script.sh -append```
----
-
-<a href="#" align="right"><i>Developer: Pasit Y. (Release 20230411)</i></a>
