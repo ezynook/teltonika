@@ -75,16 +75,27 @@ echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron restart
 #
 echo "Assign DNS to network WWAN0"
-sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
-MAKESED=$(cat /etc/config/network | grep 'option peerdns')
-if [ -z "$MAKESED" ]; then
-	sed -i "51i ${nl}" /etc/config/network
-	sed -i -E "51i \\\toption peerdns '0'" /etc/config/network
+if [ -z "$(cat /etc/version | grep '14')" ]; then
+	sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
+	if [ -z "$(cat /etc/config/network | grep 'option peerdns')" ]; then
+		sed -i "51i ${nl}" /etc/config/network
+		sed -i -E "51i \\\toption peerdns '0'" /etc/config/network
+	fi
+	sed -i "52i ${nl}" /etc/config/network
+	sed -i "53i ${nl}" /etc/config/network
+	sed -i -E "52i \\\tlist dns '8.8.8.8'" /etc/config/network
+	sed -i -E "53i \\\tlist dns '8.8.4.4'" /etc/config/network
+else
+	sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
+	if [ -z "$(cat /etc/config/network | grep 'option peerdns')" ]; then
+		sed -i "69i ${nl}" /etc/config/network
+		sed -i -E "69i \\\toption peerdns '0'" /etc/config/network
+	fi
+	sed -i "70i ${nl}" /etc/config/network
+	sed -i "71i ${nl}" /etc/config/network
+	sed -i -E "70i \\\tlist dns '8.8.8.8'" /etc/config/network
+	sed -i -E "71i \\\tlist dns '8.8.4.4'" /etc/config/network
 fi
-sed -i "52i ${nl}" /etc/config/network
-sed -i "53i ${nl}" /etc/config/network
-sed -i -E "52i \\\tlist dns '8.8.8.8'" /etc/config/network
-sed -i -E "53i \\\tlist dns '8.8.4.4'" /etc/config/network
 /etc/init.d/network reload
 #
 echo "Check and Add Resolve DNS..."
