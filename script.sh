@@ -83,6 +83,7 @@ sed -i -E "53i \\\tlist dns '8.8.4.4'" /etc/config/network
 /etc/init.d/network reload
 #
 echo "Check and Add Resolve DNS..."
+echo > /tmp/resolv.conf.auto
 echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
 #
 echo "Add Logon Script profile..."
