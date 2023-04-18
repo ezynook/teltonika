@@ -75,7 +75,7 @@ echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron restart
 #
 echo "Assign DNS to network WWAN0"
-if [ -z "$(cat /etc/version | grep '14')" ]; then
+if [ -n "$(cat /etc/version | grep '14')" ]; then
 	sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
 	if [ -z "$(cat /etc/config/network | grep 'option peerdns')" ]; then
 		sed -i "51i ${nl}" /etc/config/network
