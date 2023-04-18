@@ -74,9 +74,6 @@ echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable
 /etc/init.d/cron restart
 #
-echo "Check and Add Resolve DNS..."
-echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
-#
 echo "Assign DNS to network WWAN0"
 sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
 sed -i "52i ${nl}" /etc/config/network
@@ -84,6 +81,9 @@ sed -i "53i ${nl}" /etc/config/network
 sed -i -E "52i \\\tlist dns '8.8.8.8'" /etc/config/network
 sed -i -E "53i \\\tlist dns '8.8.4.4'" /etc/config/network
 /etc/init.d/network reload
+#
+echo "Check and Add Resolve DNS..."
+echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
 #
 echo "Add Logon Script profile..."
 echo "
