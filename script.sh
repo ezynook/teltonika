@@ -76,15 +76,15 @@ echo "Crontab Task Restarting and Enable to Spool..."
 #
 echo "Assign DNS to network WWAN0"
 sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
+MAKESED=$(cat /etc/config/network | grep 'option peerdns')
+if [ -z "$MAKESED" ]; then
+	sed -i "51i ${nl}" /etc/config/network
+	sed -i -E "51i \\\toption peerdns '0'" /etc/config/network
+fi
 sed -i "52i ${nl}" /etc/config/network
 sed -i "53i ${nl}" /etc/config/network
 sed -i -E "52i \\\tlist dns '8.8.8.8'" /etc/config/network
 sed -i -E "53i \\\tlist dns '8.8.4.4'" /etc/config/network
-MAKESED=$(cat /etc/config/network | grep 'option peerdns')
-if [ -z "$MAKESED" ]; then
-	sed -i "54i ${nl}" /etc/config/network
-	sed -i -E "54i \\\toption peerdns '0'" /etc/config/network
-fi
 /etc/init.d/network reload
 #
 echo "Check and Add Resolve DNS..."
