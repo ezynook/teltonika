@@ -74,21 +74,15 @@ echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable
 /etc/init.d/cron restart
 #
-echo "Assign DNS to network WWAN0"
-CHECKLINE=`cat /etc/config/network | grep -n "config interface 'ppp'"| awk '{print $1}' | cut -f1 -d ":"`
-PLUSLINE1=$((CHECKLINE+1))
-PLUSLINE2=$((CHECKLINE+2))
-PLUSLINE3=$((CHECKLINE+3))
-sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
-if [ -z "$(cat /etc/config/network | grep 'option peerdns')" ]; then
-	sed -i "${PLUSLINE1}i ${nl}" /etc/config/network
-	sed -i -E "${PLUSLINE1}i \\\toption peerdns '0'" /etc/config/network
-fi
-sed -i "${PLUSLINE2}i ${nl}" /etc/config/network
-sed -i -E "${PLUSLINE2}i \\\tlist dns '8.8.8.8'" /etc/config/network
-sed -i "${PLUSLINE3}i ${nl}" /etc/config/network
-sed -i -E "${PLUSLINE3}i \\\tlist dns '8.8.4.4'" /etc/config/network
-/etc/init.d/network reload
+# echo "Assign DNS to network WWAN0"
+# sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
+# sed -i "${PLUSLINE1}i ${nl}" /etc/config/network
+# sed -i -E "${PLUSLINE1}i \\\toption peerdns '0'" /etc/config/network
+# sed -i "${PLUSLINE2}i ${nl}" /etc/config/network
+# sed -i -E "${PLUSLINE2}i \\\tlist dns '8.8.8.8'" /etc/config/network
+# sed -i "${PLUSLINE3}i ${nl}" /etc/config/network
+# sed -i -E "${PLUSLINE3}i \\\tlist dns '8.8.4.4'" /etc/config/network
+# /etc/init.d/network reload
 #
 echo "Check and Add Resolve DNS..."
 echo > /tmp/resolv.conf.auto
