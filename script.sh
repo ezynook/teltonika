@@ -95,7 +95,7 @@ echo "Add Logon Script profile..."
 echo "
 /bin/ipsec_check.sh" >> /etc/profile
 #
-echo "Update available package has Up-to-Date now..."
+echo "Update available package and reloading service has Up-to-Date please wait..."
 opkg update >/dev/null 2>&1
 #
 if [ -z "$1" ]; then
