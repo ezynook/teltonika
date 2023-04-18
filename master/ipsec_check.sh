@@ -6,6 +6,16 @@
 
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 
+echo "-------------------Check Sim Status-------------------"
+if [ -z "$(gsmctl -j | grep connected)" ]; then
+    echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
+    reboot
+else
+    echo "$TODAY -> Service Sim Carrier is Normal";
+    echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
+fi
+#
+
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?

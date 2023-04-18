@@ -50,9 +50,6 @@ fi
 if [ -n "$(ls /bin/ | grep chkservice.sh)" ]; then
 	rm -f /bin/chkservice.sh
 fi
-if [ -n "$(ls /bin/ | grep script_retry.sh)" ]; then
-	rm -f /bin/script_retry.sh
-fi
 #
 echo "Create Log Directory..."
 mkdir -p /var/log/
@@ -62,16 +59,13 @@ echo "Get Script from github server..."
 cd /bin/
 curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh >/dev/null 2>&1
 curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh >/dev/null 2>&1
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/script_retry.sh >/dev/null 2>&1
 chmod +x /bin/ipsec_check.sh
 chmod +x /bin/chkservice.sh
-chmod +x /bin/script_retry.sh
 #
 echo "Writing Crontab Scheduler..."
-echo "*/2 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
+echo "0 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
 echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
 echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
-echo "* * * * * /bin/script_retry.sh" >> /etc/crontabs/root
 echo "* * * * * /bin/ipsec_check.sh" >> /etc/crontabs/root
 echo "59 23 * * * sync; echo 3 > /proc/sys/vm/drop_caches " >> /etc/crontabs/root
 echo "@reboot /bin/ipsec_check.sh" >> /etc/crontabs/root
@@ -85,7 +79,6 @@ echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
 #
 echo "Add Logon Script profile..."
 echo "
-/bin/script_retry.sh
 /bin/ipsec_check.sh" >> /etc/profile
 #
 echo "Update available package has Up-to-Date now..."
@@ -123,5 +116,4 @@ echo "Please wait Starting All Service..."
 #
 /bin/ipsec_check.sh 
 /bin/chkservice.sh 
-/bin/script_retry.sh 
 source /etc/profile
