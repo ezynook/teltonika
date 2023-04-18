@@ -82,7 +82,7 @@ PLUSLINE3=$((CHECKLINE+3))
 sed -i "s/option peerdns '1'/option peerdns '0'/g" /etc/config/network
 if [ -z "$(cat /etc/config/network | grep 'option peerdns')" ]; then
 	sed -i "${PLUSLINE1}i ${nl}" /etc/config/network
-	sed -i -E "${PLUSLINE}i \\\toption peerdns '0'" /etc/config/network
+	sed -i -E "${PLUSLINE1}i \\\toption peerdns '0'" /etc/config/network
 fi
 sed -i "${PLUSLINE2}i ${nl}" /etc/config/network
 sed -i -E "${PLUSLINE2}i \\\tlist dns '8.8.8.8'" /etc/config/network
