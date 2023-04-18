@@ -88,7 +88,6 @@ sed -i "${PLUSLINE2}i ${nl}" /etc/config/network
 sed -i -E "${PLUSLINE2}i \\\tlist dns '8.8.8.8'" /etc/config/network
 sed -i "${PLUSLINE3}i ${nl}" /etc/config/network
 sed -i -E "${PLUSLINE3}i \\\tlist dns '8.8.4.4'" /etc/config/network
-fi
 /etc/init.d/network reload
 #
 echo "Check and Add Resolve DNS..."
