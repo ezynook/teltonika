@@ -9,6 +9,7 @@ Author: Engineer NW & TC
 ----------------------------
 -> Please wait ......
 "
+echo "Device version: $(cat /etc/version)"
 sleep 5
 #
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
