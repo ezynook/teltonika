@@ -2,8 +2,7 @@
 #------------------------------
 #Script Launcher Main Code
 #------------------------------
-echo "
-----------------------------
+echo "----------------------------
 Teltonika Monitoring Script
 Author: Engineer NW & TC
 ----------------------------
@@ -70,23 +69,26 @@ echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
 echo "* * * * * /bin/ipsec_check.sh" >> /etc/crontabs/root
 echo "59 23 * * * sync; echo 3 > /proc/sys/vm/drop_caches " >> /etc/crontabs/root
 echo "@reboot /bin/ipsec_check.sh" >> /etc/crontabs/root
-echo "$TODAY -> Create Cronjob Successfully..."
-echo "Crontab Task Restarting and Enable to Spool..."
 /etc/init.d/cron enable
 /etc/init.d/cron restart
 #
 echo "Assign DNS to network wwan0..."
-sed -i -E "/option ifname 'wwan0'/a \\\toption peerdns '0'\n\\tlist dns '8.8.8.8'\n\\tlist dns '8.8.4.4'" /etc/config/network
-/etc/init.d/network reload
-
+CHECKDUP=`cat /etc/config/network | grep "option peerdns '0'"`
+if [ -z "$CHECKDUP" ]; then
+	sed -i -E "/option ifname 'wwan0'/a \\\toption peerdns '0'\n\\tlist dns '8.8.8.8'\n\\tlist dns '8.8.4.4'" /etc/config/network
+	/etc/init.d/network reload
+fi
 #
 echo "Check and Add Resolve DNS..."
-echo > /tmp/resolv.conf.auto
-echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
+if [ -z "$(cat /tmp/resolv.conf.auto | grep 'nameserver 8.8.8.8')" ]; then
+	echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
+fi
 #
 echo "Add Logon Script profile..."
-echo "
-/bin/ipsec_check.sh" >> /etc/profile
+if [ -z "$(cat /etc/profile | grep 'ipsec_check')" ]; then
+	echo "
+	/bin/ipsec_check.sh" >> /etc/profile
+fi
 #
 echo "Update available package and reloading service has Up-to-Date please wait..."
 opkg update >/dev/null 2>&1
@@ -121,6 +123,8 @@ fi
 #
 echo "Please wait Starting All Service..."
 #
+echo "Final Step please wait..."
+sleep 5
 /bin/ipsec_check.sh 
 /bin/chkservice.sh 
 source /etc/profile
