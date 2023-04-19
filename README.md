@@ -17,7 +17,7 @@
 > เข้าไปที่เมนู Services > CLI จากนั้น Login ด้วย
 * Username: root
 * Password: DA@dmin1
-> หรือเข้าผ่าน CMD
+> หรือเข้าผ่าน CMD <p style="color: red;">(แนะนำ)</p>
 ```bash
 ssh root@ipaddress
 #example
