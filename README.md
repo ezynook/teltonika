@@ -1,13 +1,19 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Teltonika_logo.sng.png/1200px-Teltonika_logo.sng.png" width="200" align="center">
 
 # หลักการทำงานของ Script
+> version 1.0
 * เช็คสัญญาณของซิมว่าต้ำกว่ามาตราฐานหรือไม่ หากต่ำกว่าก็จะ Restart Service โดยอัตโนมัติ | ทุกๆ 9 โมงเช้าของทุกวัน
-* ตรวจสอบการทำงานของ VPN IPSec หากไม่สามารถเชื่อมต่อได้จะ Restart IPSec อัตโนมัติ | ทุกๆ 1 นาที
-* เช็คการทำงานของซิม เวลาที่ Online ล่าสุดต้องไม่ต่ำกว่า 1 วัน (วันที่ Uptime ต้องตรงกับ Date Now) | ทุกๆ 15 นาที
+* ตรวจสอบการทำงานของ VPN IPSec และ WAn Network (ppp) หากไม่สามารถเชื่อมต่อได้จะ Restart IPSec/Network อัตโนมัติ | ทุกๆ 1 นาที
 * เช็ค Memory ของ Router ว่าต่ำกว่ามาตราฐานหรือไม่ ที่ได้ทำการตั้งไว้คือ <= 10MB (โดยทั้งหมดมี 64MB) | ทุกๆ 23:59 ของทุกวัน
 * เช็ค DNS ให้ออนไลน์ไปที่ 8.8.8.8 (Google DNS) เพื่อให้ตรวจสอบการออกอินเตอร์เน็ตได้
-* Update Package ให้ทันสมัย | ทุกๆ 9 โมงเช้า
+* Update Opkg Package ให้ทันสมัย | ทุกๆ 9 โมงเช้า
 * ส่งไลน์ทุกๆ 9 โมงเช้าเพื่อบอกสถานะ Router ของทุกวัน
+
+> version 2.0
+
+* ตรวจสอบ resolv.conf ให้วิ่งไปที่ 8.8.8.8 เนื่องจากในบางครั้งสัญญาณอ่อนเลยไม่สามารถทำการ renew dns peer ได้
+* เพิ่ม peerdns ไปที่ network config file ให้วิ่งไปที่ 8.8.8.8 / 8.8.4.4 เพื่อใช้ในการตรวจสอบ failover resolve ของสัญญาณ | หรือจะเข้าไปตั้งค่าได้ที่ Web UI ที่เมนู Network > WAN > กด Edit ตรง WAN
+* เพิ่ม IPsec Check ไปยัง /etc/profile เพื่อตรวจสอบการทำงานของ Network ทุกครั้งหลังจากมีการ Reboot
 ---
 ## วิธีการใช้งานและติดตั้ง
 ### เข้าไปยัง Router ผ่าน Browser
@@ -17,14 +23,14 @@
 > เข้าไปที่เมนู Services > CLI จากนั้น Login ด้วย
 * Username: root
 * Password: DA@dmin1
-> หรือเข้าผ่าน CMD <p style="color: red;">(แนะนำ)</p>
+> หรือเข้าผ่าน Command prompt (Windows) / Terminal (macOS) (แนะนำ)
 ```bash
 ssh root@ipaddress
 #example
 ssh root@10.1.1.1
 ```
 ### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
-```sh
+```bash
 cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh >/dev/null 2>&1; chmod +x /bin/script.sh; ./script.sh; rm -f /bin/script.sh
 ```
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
