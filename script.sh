@@ -72,13 +72,6 @@ echo "@reboot /bin/ipsec_check.sh" >> /etc/crontabs/root
 /etc/init.d/cron enable
 /etc/init.d/cron restart
 #
-echo "Assign DNS to network wwan0..."
-# CHECKDUP=`cat /etc/config/network | grep "option peerdns '0'"`
-# if [ -z "$CHECKDUP" ]; then
-# 	sed -i -E "/option ifname 'wwan0'/a \\\toption peerdns '0'\n\\tlist dns '8.8.8.8'\n\\tlist dns '8.8.4.4'" /etc/config/network
-# 	/etc/init.d/network reload
-# fi
-#
 echo "Check and Add Resolve DNS..."
 if [ -z "$(cat /tmp/resolv.conf.auto | grep 'nameserver 8.8.8.8')" ]; then
 	echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
