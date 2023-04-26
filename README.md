@@ -12,9 +12,12 @@
 > version 2.0
 
 * ตรวจสอบ resolv.conf ให้วิ่งไปที่ 8.8.8.8 เนื่องจากในบางครั้งสัญญาณอ่อนเลยไม่สามารถทำการ renew dns peer ได้
-* เพิ่ม peerdns ไปที่ network config file ให้วิ่งไปที่ 8.8.8.8 / 8.8.4.4 เพื่อใช้ในการตรวจสอบ failover resolve ของสัญญาณ | หรือจะเข้าไปตั้งค่าได้ที่ Web UI ที่เมนู Network > WAN > กด Edit ตรง WAN
 * เพิ่ม IPsec Check ไปยัง /etc/profile เพื่อตรวจสอบการทำงานของ Network ทุกครั้งหลังจากมีการ Reboot
 * Check Outgoing with Ping (simple package 16 byte)
+
+> version 2.0
+* Check Outgoing with Ping (simple package 16 byte)
+
 ---
 ## วิธีการใช้งานและติดตั้ง
 ### เข้าไปยัง Router ผ่าน Browser
