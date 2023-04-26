@@ -118,6 +118,6 @@ echo "Please wait Starting All Service..."
 #
 echo "Final Step please wait..."
 sleep 5
-/bin/ipsec_check.sh 
-/bin/chkservice.sh 
-source /etc/profile
+/bin/ipsec_check.sh >/dev/null 2>&1
+/bin/chkservice.sh >/dev/null 2>&1
+source /etc/profile >/dev/null 2>&1

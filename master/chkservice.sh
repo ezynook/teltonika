@@ -3,11 +3,21 @@
 #-----------------------------------------
 #Check All Service Run Every at: 09:00 AM
 #-----------------------------------------
-
-TODAY=`date +%d-%m-%Y:%H-%M-%S`
-
-TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q" #Line Token (Toey Account)
-echo "------------Checking file all ready exists---------------------"
+ipsec_check(){
+    /etc/init.d/ipsec restart >/dev/null 2>&1
+    iptables -F >/dev/null 2>&1
+    iptables -X >/dev/null 2>&1
+    iptables -P INPUT ACCEPT >/dev/null 2>&1
+    iptables -P FORWARD ACCEPT >/dev/null 2>&1
+    iptables -P OUTPUT ACCEPT >/dev/null 2>&1
+    iptables-save >/dev/null 2>&1
+}
+#
+TODAY=`date +%d-%m-%Y %H:%M:%S`
+#Line Token (Toey Account)
+TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q"
+#
+echo "+-Checking file all ready exists-+"
 if [ -z "$(gsmctl -j | grep connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
     reboot
@@ -16,7 +26,7 @@ else
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
 #
-echo "------------------Checking Signal Status (Tier 1 -3C)--------------------"
+echo "+-Checking Signal Status (Tier 1 -3C)-+"
 SIGNAL1=$(gsmctl -q)
 VALUE1="-100"
 
@@ -40,10 +50,17 @@ if [ $ret -ne 0 ]; then
         iptables -P FORWARD ACCEPT
         iptables -P OUTPUT ACCEPT
         iptables-save
-        echo "$TODAY -> Reboot router because IPSec disconnected" >> /var/log/da.log
+        echo "$TODAY -> Reboot service IPSec because IPSec disconnected" >> /var/log/da.log
 else
         echo "$TODAY -> Service IPSec is Normal"
         echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
+fi
+#Outgoing check
+#Check Outgoing
+if ! ping -c 5 -W 1 -s 16 google.com >/dev/null 2>&1; then
+  ipsec_check
+else
+  echo "Last check Outgoing at: $TODAY -> Normal" >> /var/log/da.log
 fi
 #
 sync; echo 3 > /proc/sys/vm/drop_caches
