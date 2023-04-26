@@ -15,7 +15,7 @@
 * เพิ่ม IPsec Check ไปยัง /etc/profile เพื่อตรวจสอบการทำงานของ Network ทุกครั้งหลังจากมีการ Reboot
 * Check Outgoing with Ping (simple package 16 byte)
 
-> version 2.0
+> version 3.0
 * Check Outgoing with Ping (simple package 16 byte)
 
 ---
