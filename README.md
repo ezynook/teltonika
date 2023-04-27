@@ -22,16 +22,16 @@
 ## วิธีการใช้งานและติดตั้ง
 ### เข้าไปยัง Router ผ่าน Browser
 * Username: admin
-* Password: DA@dmin1
+* Password: ********
 
 > เข้าไปที่เมนู Services > CLI จากนั้น Login ด้วย
 * Username: root
-* Password: DA@dmin1
+* Password: ********
 > หรือเข้าผ่าน Command prompt (Windows) / Terminal (macOS) (แนะนำ)
 ```bash
-ssh root@ipaddress
+ssh root@x.x.x.x
 #example
-ssh root@10.1.1.1
+ssh root@10.5.4.1
 ```
 ### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
 ```bash
