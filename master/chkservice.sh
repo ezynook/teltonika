@@ -39,6 +39,7 @@ else
         S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
 #
+echo "+-Ping to HQ-+"
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
@@ -55,12 +56,13 @@ else
         echo "$TODAY -> Service IPSec is Normal"
         echo "Last check at: $TODAY -> Service IPSec is Normal" >> /var/log/da.log
 fi
-#Outgoing check
 #Check Outgoing
+
 if ! ping -c 5 -W 1 -s 16 google.com >/dev/null 2>&1; then
   ipsec_check
 else
   echo "Last check Outgoing at: $TODAY -> Normal" >> /var/log/da.log
 fi
 #
+echo "+-Ping Check Outgoing (16 Bytes Package)-+"
 sync; echo 3 > /proc/sys/vm/drop_caches
