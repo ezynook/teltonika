@@ -28,9 +28,9 @@ fi
 #
 echo "+-Checking Signal Status (Tier 1 -3C)-+"
 SIGNAL1=$(gsmctl -q)
-VALUE1="-100"
+VALUE1="-90"
 
-if [ "$SIGNAL1" -le "$VALUE1" ]; then
+if [ "$SIGNAL1" -ge "$VALUE1" ]; then
         echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
         S_SG="Signal 4G is Bad = ${SIGNAL1}"
         reboot
