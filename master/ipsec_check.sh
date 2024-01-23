@@ -1,8 +1,8 @@
 #!/bin/sh
 
-#--------------------------
+#----------------------------------------------
 #IPSec Check Every Minute For RUT200 New Series
-#--------------------------
+#----------------------------------------------
 ipsec_check(){
     /etc/init.d/ipsec restart >/dev/null 2>&1
     iptables -F >/dev/null 2>&1
@@ -14,13 +14,27 @@ ipsec_check(){
 }
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 #
-echo "+-Check Sim Status-+"
+echo "+-Check Sim Status (Connected)-+"
 if [ -z "$(gsmctl -j | grep Connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
+    sleep 3
     reboot
 else
     echo "$TODAY -> Service Sim Carrier is Normal";
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
+fi
+#
+echo "+-Checking Signal Status (>= -90)-+"
+SIGNAL1=$(gsmctl -q | grep RSSI | awk '{print $2}')
+VALUE1="-90"
+
+if [ "$SIGNAL1" -ge "$VALUE1" ]; then
+        echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
+        S_SG="Signal 4G is Bad = ${SIGNAL1}"
+        reboot
+else
+        echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
+        S_SG="Signal 4G is Good = ${SIGNAL1}"
 fi
 #
 echo "+-Ping to HQ-+"
