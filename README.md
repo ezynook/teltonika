@@ -1,6 +1,6 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Teltonika_logo.sng.png/1200px-Teltonika_logo.sng.png" width="200" align="center">
 
-# หลักการทำงานของ Script
+# หลักการทำงานของ Script (สำหรับ RUT240)
 > version 1.0
 * เช็คสัญญาณของซิมว่าต้ำกว่ามาตราฐานหรือไม่ หากต่ำกว่าก็จะ Restart Service โดยอัตโนมัติ | ทุกๆ 9 โมงเช้าของทุกวัน
 * ตรวจสอบการทำงานของ VPN IPSec และ WAN Network (ppp) หากไม่สามารถเชื่อมต่อได้จะ Restart IPSec/Network อัตโนมัติ | ทุกๆ 1 นาที
@@ -35,12 +35,6 @@ ssh root@10.5.4.1
 ```
 ### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
 ```bash
-cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh >/dev/null 2>&1; chmod +x /bin/script.sh 1; ./script.sh; rm -f /bin/script.sh
+cd /bin/; curl -O https://raw.githubusercontent.com/ezynook/teltonika/RUT240/script.sh >/dev/null 2>&1; chmod +x /bin/script.sh 1; ./script.sh; rm -f /bin/script.sh
 ```
 ### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
----
-Other Parameter
-* Runing Script without Send line Every 9.00am
-```./script.sh 1``` <br>
-* Append Send line to existing script
-```./script.sh -append```
