@@ -18,7 +18,7 @@ TODAY=`date +%d-%m-%Y %H:%M:%S`
 TOKEN="JFJyi78b88GS71LEOXps5033VvAHoswaDGHlnK8jY8q"
 #
 echo "+-Checking file all ready exists-+"
-if [ -z "$(gsmctl -j | grep connected)" ]; then
+if [ -z "$(gsmctl -j | grep Connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
     reboot
 else
@@ -27,7 +27,7 @@ else
 fi
 #
 echo "+-Checking Signal Status (Tier 1 -3C)-+"
-SIGNAL1=$(gsmctl -q)
+SIGNAL1=$(gsmctl -q | grep RSSI | awk '{print $2}')
 VALUE1="-90"
 
 if [ "$SIGNAL1" -ge "$VALUE1" ]; then
@@ -44,13 +44,7 @@ ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
 if [ $ret -ne 0 ]; then
-        /etc/init.d/ipsec restart
-        iptables -F
-        iptables -X
-        iptables -P INPUT ACCEPT
-        iptables -P FORWARD ACCEPT
-        iptables -P OUTPUT ACCEPT
-        iptables-save
+        ipsec_check
         echo "$TODAY -> Reboot service IPSec because IPSec disconnected" >> /var/log/da.log
 else
         echo "$TODAY -> Service IPSec is Normal"
@@ -66,3 +60,29 @@ fi
 #
 echo "+-Ping Check Outgoing (16 Bytes Package)-+"
 sync; echo 3 > /proc/sys/vm/drop_caches
+
+#Send Line 
+newline=$'\n'
+title="[Teltonika Report]"
+mICCID="Sim No.: "
+ICCID=$(gsmctl -J)
+mCarr="Carrier: "
+Carr=$(gsmctl -o)
+high_signal="Signal Status: $(gsmctl -t)"
+IPm="IP Private: "
+IP2m="IP Public: "
+IP2=$(ip addr show dev wwan0 | grep inet | awk '{print $2}')
+IP=$(ip addr show dev br-lan | grep inet | awk '{print $2}' | head -n1)
+Statusm="Status: "
+Status=$(gsmctl -j)
+devicem="Device No.: "
+device=$(gsmctl -a)
+sitem="Customer: "
+sitecus=$(uci get system.@system[0].hostname)
+fwm="Firmware V. "
+fw=$(cat /etc/version)
+TODAY=$(date +"%Y-%m-%d")
+dates="Last check: $TODAY"
+TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
+
+curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify

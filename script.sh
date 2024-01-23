@@ -13,34 +13,6 @@ sleep 5
 #
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 #
-if [ "$1" == '-append' ]; then
-	echo '
-newline=$'"'\n'"'
-title="[Teltonika Report]"
-mICCID="Sim No.: "
-ICCID=`gsmctl -J`
-mCarr="Carrier: "
-Carr=`gsmctl -o`
-high_signal="Signal Status: $(gsmctl -t)"
-IPm="IP Private: "
-IP2m="IP Public: "
-IP2=`ip addr show dev wwan0 | grep inet | awk '{print $2}'`
-IP=`ip addr show dev br-lan | grep inet | awk '{print $2}' | head -n1`
-Statusm="Status: "
-Status=`gsmctl -j`
-devicem="Device No.: "
-device=`gsmctl -a`
-sitem="Customer: "
-sitecus=`uci get system.@system[0].hostname`
-fwm="Firmware V. "
-fw=`cat /etc/version`
-dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
-curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify' >> /bin/chkservice.sh
-echo "Append Sendline to Existing Script..."
-exit 1
-fi
-#
 echo "Check file all ready Exists...!"
 if [ -n "$(ls /bin/ | grep ipsec_check)" ]; then
 	rm -f /bin/ipsec_check.sh
@@ -55,14 +27,14 @@ touch /var/log/da.log
 #
 echo "Get Script from github server..."
 cd /bin/
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh >/dev/null 2>&1
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/RUT200/master/ipsec_check.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/RUT200/master/chkservice.sh >/dev/null 2>&1
 chmod +x /bin/ipsec_check.sh
 chmod +x /bin/chkservice.sh
 #
 echo "Writing Crontab Scheduler..."
-echo "0 * * * * /sbin/ping_reboot 1 8.8.8.8 2 56 5 2 0 cfg01c21d" > /etc/crontabs/root
-echo "0 * * * * /etc/init.d/rut_fota start" >> /etc/crontabs/root
+echo "1 18 * * 5 /sbin/rut_fota --fw_info >/dev/null 2>&1 #746c74" > /etc/crontabs/root
+echo "*/5 * * * * /usr/sbin/ping_reboot.sh cfg01c21d" >> /etc/crontabs/root
 echo "0 9 * * * /bin/chkservice.sh" >> /etc/crontabs/root
 echo "* * * * * /bin/ipsec_check.sh" >> /etc/crontabs/root
 echo "59 23 * * * sync; echo 3 > /proc/sys/vm/drop_caches " >> /etc/crontabs/root
@@ -71,8 +43,9 @@ echo "@reboot /bin/ipsec_check.sh" >> /etc/crontabs/root
 /etc/init.d/cron restart
 #
 echo "Check and Add Resolve DNS..."
-if [ -z "$(cat /tmp/resolv.conf.auto | grep 'nameserver 8.8.8.8')" ]; then
-	echo "nameserver 8.8.8.8" > /tmp/resolv.conf.auto
+if [ -z "$(cat /tmp/resolv.conf.d/resolv.conf.auto | grep 'nameserver 8.8.8.8')" ]; then
+	echo "nameserver 8.8.8.8" > /tmp/resolv.conf.d/resolv.conf.auto
+	echo "nameserver 8.8.8.8" >> cat /tmp/resolv.conf
 fi
 #
 echo "Add Logon Script profile..."
@@ -83,34 +56,6 @@ fi
 #
 echo "Update available package and reloading service has Up-to-Date please wait..."
 opkg update >/dev/null 2>&1
-#
-if [ -z "$1" ]; then
-	echo '
-newline=$'"'\n'"'
-title="[Teltonika Report]"
-mICCID="Sim No.: "
-ICCID=`gsmctl -J`
-mCarr="Carrier: "
-Carr=`gsmctl -o`
-high_signal="Signal Status: $(gsmctl -t)"
-IPm="IP Private: "
-IP2m="IP Public: "
-IP2=`gsmctl --ip wwan0`
-IP=`gsmctl --ip br-lan`
-Statusm="Status: "
-Status=`gsmctl -j`
-devicem="Device No.: "
-device=`gsmctl -a`
-sitem="Customer: "
-site=`cat /etc/ipsec.conf | grep -m 1 "leftid=" | cut -c9-0`
-site2=`cat /etc/ipsec.conf | grep -m 1 "conn" | cut -c5-0`
-sitecus="${site} / ${site2}"
-fwm="Firmware V. "
-fw=`cat /etc/version | cut -c10-0`
-dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
-curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify' >> /bin/chkservice.sh
-fi
 #
 echo "Please wait Starting All Service..."
 #

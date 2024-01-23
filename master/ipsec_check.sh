@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #--------------------------
-#IPSec Check Every Minute
+#IPSec Check Every Minute For RUT200 New Series
 #--------------------------
 ipsec_check(){
     /etc/init.d/ipsec restart >/dev/null 2>&1
@@ -15,7 +15,7 @@ ipsec_check(){
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 #
 echo "+-Check Sim Status-+"
-if [ -z "$(gsmctl -j | grep connected)" ]; then
+if [ -z "$(gsmctl -j | grep Connected)" ]; then
     echo "$TODAY -> Reboot router because GSM disconnected" >> /var/log/da.log
     reboot
 else
@@ -28,13 +28,7 @@ ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
 if [ $ret -ne 0 ]; then
-        /etc/init.d/ipsec restart
-        iptables -F
-        iptables -X
-        iptables -P INPUT ACCEPT
-        iptables -P FORWARD ACCEPT
-        iptables -P OUTPUT ACCEPT
-        iptables-save
+        ipsec_check
         echo "$TODAY -> Reboot service IPSec because IPSec disconnected" >> /var/log/da.log
 else
         echo "$TODAY -> Service IPSec is Normal"
