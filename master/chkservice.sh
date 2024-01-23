@@ -66,3 +66,30 @@ fi
 #
 echo "+-Ping Check Outgoing (16 Bytes Package)-+"
 sync; echo 3 > /proc/sys/vm/drop_caches
+#Send Line
+newline=$'\n'
+title="[Teltonika Report]"
+mICCID="Sim No.: "
+ICCID=$(gsmctl -J)
+mCarr="Carrier: "
+Carr=$(gsmctl -o)
+high_signal="Signal Status: $(gsmctl -t)"
+IPm="IP Private: "
+IP2m="IP Public: "
+IP2=$(gsmctl --ip wwan0)
+IP=$(gsmctl --ip br-lan)
+Statusm="Status: "
+Status=$(gsmctl -j)
+devicem="Device No.: "
+device=$(gsmctl -a)
+sitem="Customer: "
+site=$(cat /etc/ipsec.conf | grep -m 1 "leftid=" | cut -c9-0)
+site2=$(cat /etc/ipsec.conf | grep -m 1 "conn" | cut -c5-0)
+sitecus="${site} / ${site2}"
+fwm="Firmware V. "
+fw=$(cat /etc/version | cut -c10-0)
+TODAY=$(date +"%Y-%m-%d")
+dates="Last check: $TODAY"
+TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
+
+curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify

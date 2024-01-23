@@ -13,36 +13,6 @@ sleep 5
 #
 TODAY=`date +%d-%m-%Y:%H-%M-%S`
 #
-if [ "$1" == '-append' ]; then
-	echo '
-newline=$'"'\n'"'
-title="[Teltonika Report]"
-mICCID="Sim No.: "
-ICCID=`gsmctl -J`
-mCarr="Carrier: "
-Carr=`gsmctl -o`
-high_signal="Signal Status: $(gsmctl -t)"
-IPm="IP Private: "
-IP2m="IP Public: "
-IP2=`gsmctl --ip wwan0`
-IP=`gsmctl --ip br-lan`
-Statusm="Status: "
-Status=`gsmctl -j`
-devicem="Device No.: "
-device=`gsmctl -a`
-sitem="Customer: "
-site=`cat /etc/ipsec.conf | grep -m 1 "leftid=" | cut -c9-0`
-site2=`cat /etc/ipsec.conf | grep -m 1 "conn" | cut -c5-0`
-sitecus="${site} / ${site2}"
-fwm="Firmware V. "
-fw=`cat /etc/version | cut -c10-0`
-dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
-curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify' >> /bin/chkservice.sh
-echo "Append Sendline to Existing Script..."
-exit 1
-fi
-#
 echo "Check file all ready Exists...!"
 if [ -n "$(ls /bin/ | grep ipsec_check)" ]; then
 	rm -f /bin/ipsec_check.sh
@@ -57,8 +27,8 @@ touch /var/log/da.log
 #
 echo "Get Script from github server..."
 cd /bin/
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/ipsec_check.sh >/dev/null 2>&1
-curl -O https://raw.githubusercontent.com/ezynook/teltonika/main/master/chkservice.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/RUT240/master/ipsec_check.sh >/dev/null 2>&1
+curl -O https://raw.githubusercontent.com/ezynook/teltonika/RUT240/master/chkservice.sh >/dev/null 2>&1
 chmod +x /bin/ipsec_check.sh
 chmod +x /bin/chkservice.sh
 #
@@ -85,34 +55,6 @@ fi
 #
 echo "Update available package and reloading service has Up-to-Date please wait..."
 opkg update >/dev/null 2>&1
-#
-if [ -z "$1" ]; then
-	echo '
-newline=$'"'\n'"'
-title="[Teltonika Report]"
-mICCID="Sim No.: "
-ICCID=`gsmctl -J`
-mCarr="Carrier: "
-Carr=`gsmctl -o`
-high_signal="Signal Status: $(gsmctl -t)"
-IPm="IP Private: "
-IP2m="IP Public: "
-IP2=`gsmctl --ip wwan0`
-IP=`gsmctl --ip br-lan`
-Statusm="Status: "
-Status=`gsmctl -j`
-devicem="Device No.: "
-device=`gsmctl -a`
-sitem="Customer: "
-site=`cat /etc/ipsec.conf | grep -m 1 "leftid=" | cut -c9-0`
-site2=`cat /etc/ipsec.conf | grep -m 1 "conn" | cut -c5-0`
-sitecus="${site} / ${site2}"
-fwm="Firmware V. "
-fw=`cat /etc/version | cut -c10-0`
-dates="Last check: $TODAY"
-TOTAL="$newline $title $newline $mICCID $ICCID $newline $mCarr $Carr $newline $IPm $IP $newline $IP2m $IP2 $newline $Statusm $Status $newline $S_SG $newline $high_signal $newline $devicem $device $newline $sitem $sitecus $newline $fwm $fw $newline $dates"
-curl -X POST -H "Authorization: Bearer $TOKEN" -F "message=$TOTAL" https://notify-api.line.me/api/notify' >> /bin/chkservice.sh
-fi
 #
 echo "Please wait Starting All Service..."
 #
