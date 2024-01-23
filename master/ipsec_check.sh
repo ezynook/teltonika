@@ -23,18 +23,25 @@ else
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
 #
+echo "+-Checking Signal Status (Tier 1 -3C)-+"
+SIGNAL1=$(gsmctl -q)
+VALUE1="-90"
+
+if [ "$SIGNAL1" -ge "$VALUE1" ]; then
+        echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
+        S_SG="Signal 4G is Bad = ${SIGNAL1}"
+        reboot
+else
+        echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
+        S_SG="Signal 4G is Good = ${SIGNAL1}"
+fi
+#
 echo "+-Ping to HQ-+"
 ip="$(ifconfig | grep -A 1 "br-lan" | tail -1 | cut -d ":" -f 2 | cut -d " " -f 1)"
 ping 10.0.255.1 -I $ip -c 3 -q >/dev/null
 ret=$?
 if [ $ret -ne 0 ]; then
-        /etc/init.d/ipsec restart
-        iptables -F
-        iptables -X
-        iptables -P INPUT ACCEPT
-        iptables -P FORWARD ACCEPT
-        iptables -P OUTPUT ACCEPT
-        iptables-save
+        ipsec_check
         echo "$TODAY -> Reboot service IPSec because IPSec disconnected" >> /var/log/da.log
 else
         echo "$TODAY -> Service IPSec is Normal"
