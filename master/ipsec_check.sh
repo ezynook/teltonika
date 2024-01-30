@@ -24,17 +24,17 @@ else
     echo "Last check at: $TODAY -> Service Sim Carrier is Normal" >> /var/log/da.log
 fi
 #
-echo "+-Checking Signal Status (>= -90)-+"
-SIGNAL1=$(gsmctl -q | grep RSSI | awk '{print $2}')
-VALUE1="-90"
+echo "+-Checking Signal Status (Tier 1 -3C)-+"
+SIGNAL=`gsmctl -q | grep RSSI | awk '{print $2}' | cut -f2 -d"-"`
+VALUE="90"
 
-if [ "$SIGNAL1" -ge "$VALUE1" ]; then
-        echo "Loss Signal Restart Device at: ${TODAY}" >> /var/log/check_signal.log
-        S_SG="Signal 4G is Bad = ${SIGNAL1}"
+if [ "$SIGNAL" -ge "$VALUE" ]; then
+        echo "Loss Signal Restart Device at: ${SIGNAL}"
+        S_SG="Signal 4G is Bad = ${SIGNAL}"
         reboot
 else
-        echo "Signal is Normal at: ${TODAY}" >> /var/log/check_signal.log
-        S_SG="Signal 4G is Good = ${SIGNAL1}"
+        echo "Signal is Normal at: ${SIGNAL}"
+        S_SG="Signal 4G is Good = ${SIGNAL}"
 fi
 #
 echo "+-Ping to HQ-+"
