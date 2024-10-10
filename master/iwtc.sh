@@ -10,7 +10,7 @@ ipsec_check(){
     iptables -P OUTPUT ACCEPT >/dev/null 2>&1
     iptables-save >/dev/null 2>&1
 }
-TODAY=`date +%d-%m-%Y %H-%M-%S`
+TODAY=$(date +'%d-%m-%Y %H-%M-%S')
 #
 echo "+-Check Sim Status-+"
 if [ -z "$(gsmctl -j | tr 'A-Z' 'a-z' | grep connected)" ]; then

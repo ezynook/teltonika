@@ -29,7 +29,7 @@ source_env(){
 echo "Device version: $(cat /etc/version)"
 sleep 3
 #
-TODAY=`date +%d-%m-%Y:%H-%M-%S`
+TODAY=$(date +'%d-%m-%Y:%H-%M-%S')
 #
 echo "Check file all ready Exists...!"
 if [ -n "$(ls /bin/ | grep iwtc)" ]; then
