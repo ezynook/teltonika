@@ -1,6 +1,5 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Teltonika_logo.sng.png/1200px-Teltonika_logo.sng.png" width="200" align="center">
 
-# `RUT240`
 
 ## วิธีการใช้งานและติดตั้ง
 ### เข้าไปยัง Router ผ่าน Browser
@@ -18,8 +17,7 @@ ssh root@10.5.4.1
 ```
 ### จากนั้น Copy & Paste คำสั่งดังนี้ รอจนกว่า Script จะรันจนเสร็จ
 ```bash
-curl -o /bin/script.sh https://raw.githubusercontent.com/ezynook/teltonika/RUT240/script.sh
+curl -o /bin/script.sh https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh
 chmod +x /bin/script.sh
 ./script.sh
 ```
-### หลังจากทำทุกขั้นตอนเรียบร้อยแล้วให้ตรวจสอบข้อความใน Line Notify ว่ามีข้อความที่ตรงกับ IP Address หรือข้อมูลที่เราเพิ่ง Setting ไปหรือไม่
