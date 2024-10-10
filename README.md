@@ -19,5 +19,5 @@ ssh root@10.5.4.1
 ```bash
 curl -o /bin/script.sh https://raw.githubusercontent.com/ezynook/teltonika/main/script.sh
 chmod +x /bin/script.sh
-./script.sh
+/bin/sh /bin/script.sh
 ```
