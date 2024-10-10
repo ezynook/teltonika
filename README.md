@@ -1,6 +1,6 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Teltonika_logo.sng.png/1200px-Teltonika_logo.sng.png" width="200" align="center">
 
-
+# Version Supported Model: `RUT200`
 ## วิธีการใช้งานและติดตั้ง
 ### เข้าไปยัง Router ผ่าน Browser
 * Username: admin
